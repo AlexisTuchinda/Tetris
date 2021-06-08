@@ -53,7 +53,6 @@ class Board extends React.Component {
         this.state = {
             screenWidth: 512,
             screenHeight: 512,
-            pieces: []
         }
         this.moving = null;
         this.movingObj = null;
@@ -62,6 +61,7 @@ class Board extends React.Component {
         this.ctx = null;
         this.canvasRef = React.createRef();
         this.canvas = null;
+        this.pieces = [];
     }
 
     setUp(){
@@ -101,6 +101,7 @@ class Board extends React.Component {
           //this.canvas =  ReactDOM.findDOMNode(this).getBoundingClientRect();
           this.ctx = this.canvasRef.current.getContext('2d');
           this.setUp();   
+        this.createPiece();
         requestInterval(() => {this.update()}, constant.frameDelay );
     }
 
@@ -109,16 +110,19 @@ class Board extends React.Component {
     }
 
     createPiece(){
-        
+        let piece = new Piece(piece_types[1], this.ctx)
+        piece.make();
+        this.pieces.push(piece);
     }
 
     update(){
         if (this.ctx){
             this.ctx.clearRect(0, 0, this.state.screenWidth, this.state.screenHeight);
-            this.ctx.fillStyle = "black";
+            this.ctx.fillStyle = "white";
             this.ctx.fillRect(0, 0, this.state.screenWidth, this.state.screenHeight)
-            // this.ctx.fillStyle = "yellow";
-            // this.ctx.fillRect(0, 0, constant.SCALE, constant.SCALE);
+            for (let i = 0; i < this.pieces.length; i++){
+                this.pieces[i].render()
+;            }
         }
     }
 
@@ -126,7 +130,6 @@ class Board extends React.Component {
         return(
             <div>
                 <canvas id = {"Canvas"} ref = {this.canvasRef} className = {"Canvas"} width = {this.state.screenWidth} height = {this.state.screenHeight}/>
-                <Piece type = {piece_types[0]} ctx = {this.ctx}/>
             </div>
         )
     }
