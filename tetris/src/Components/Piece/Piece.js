@@ -9,6 +9,7 @@ window. addEventListener("keyup", function (e) {
     delete constant.keysDown[e.keyCode];
   }, false);
 
+
 class Piece{
     constructor(type, ctx){
         this.type = type;
@@ -19,11 +20,10 @@ class Piece{
     }
 
     make(){
-        this.parts =[];
         for (let y = 0; y < this.type.length; y++){
             for (let x = 0; x < this.type[y].length; x++){
                 if (this.type[y][x] !=0){
-                    this.parts.push(new Tile(8+x, y, this.ctx));
+                    this.parts.push(new Tile(8+x, y, this.ctx)); //here is where the piece always gets reset to 0...
                 }
             }
         }
@@ -38,29 +38,36 @@ class Piece{
                    }
                }
             this.type.reverse();
-            this.make();
 
-            // let [distX, distY] = [0, 0];
+            //find way to make it at the same x and y position as it was before rotation
+            this.parts =[];
+            for (let y = 0; y < this.type.length; y++){
+                for (let x = 0; x < this.type[y].length; x++){
+                    if (this.type[y][x] !=0){
+                        this.parts.push(new Tile(x, y, this.ctx)); //here is where the piece always gets reset to 0...
+                    }
+                }
+            }
+        }
+    }
 
-            // this.parts.map((tile) =>{
-            //     distX+=tile.x;
-            //     distY+=tile.y;
-
-            //     let x = -tile.x;
-            //     tile.x = tile.y;
-            //     tile.y = x; //however, doesn't stay in the relatively same place.
-            // })
-
-            // this.parts.map((tile)=>{
-            //     console.log(tile.x);
-            //     tile.x-=(Math.floor(distX/this.parts.length));
-            //     console.log(tile.x);
-            // });
+    move(){
+        if (constant.keys.right in constant.keysDown && this.falling && this.parts.every((tile) =>{return tile.x < constant.ROWSIZE-1})){
+            this.parts.map((tile)=>{
+                tile.x+=1;
+            })
+        }
+        else if(constant.keys.left in constant.keysDown && this.falling && this.parts.every((tile) =>{return tile.x >0})){
+            this.parts.map((tile)=>{
+                tile.x-=1;
+            })
         }
     }
 
     render(){
-        this.rotate();        
+        this.rotate();   
+        this.move();   
+
         this.parts.map((tile)=>{
             if (tile.y > constant.COLSIZE-2){
                 this.falling = false;
