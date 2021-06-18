@@ -1,6 +1,6 @@
 export const keysDown = {},
-ROWSIZE = 10,
-COLSIZE = 20,
+ROWSIZE = 32,
+COLSIZE = 32,
 frameRate = 1/10,
 frameDelay = frameRate*1000,
 FONT_SIZE= 22,

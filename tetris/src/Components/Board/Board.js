@@ -9,7 +9,7 @@ const piece_types = [
     [ //left l
         [1, 0],
         [1, 0],
-        [1, 1]
+        [1, 1] 
     ],
     [ //lightning
         [1, 0],
@@ -25,6 +25,7 @@ const piece_types = [
         [1, 1]
     ]
 ]
+
 
 var requestInterval = function (fn, delay) {
     var requestAnimFrame = (function () {
@@ -51,8 +52,8 @@ class Board extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            screenWidth: 512,
-            screenHeight: 512,
+            screenWidth: constant.COLSIZE*constant.SCALE,
+            screenHeight: constant.ROWSIZE*constant.SCALE,
         }
         this.moving = null;
         this.movingObj = null;
@@ -118,7 +119,7 @@ class Board extends React.Component {
     update(){
         if (this.ctx){
             this.ctx.clearRect(0, 0, this.state.screenWidth, this.state.screenHeight);
-            this.ctx.fillStyle = "white";
+            this.ctx.fillStyle = "black";
             this.ctx.fillRect(0, 0, this.state.screenWidth, this.state.screenHeight)
             for (let i = 0; i < this.pieces.length; i++){
                 this.pieces[i].render()
