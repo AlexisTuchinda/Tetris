@@ -13,7 +13,6 @@ window. addEventListener("keyup", function (e) {
 class Piece{
     constructor(type, ctx){
         this.type = type;
-        this.isMoving = true;
         this.parts = [];
         this.ctx = ctx;
         this.falling = true;
@@ -38,13 +37,13 @@ class Piece{
                    }
                }
             this.type.reverse();
-
-            //find way to make it at the same x and y position as it was before rotation
+            
+            let prevY = this.parts[0].y;
             this.parts =[];
             for (let y = 0; y < this.type.length; y++){
                 for (let x = 0; x < this.type[y].length; x++){
                     if (this.type[y][x] !=0){
-                        this.parts.push(new Tile(x, y, this.ctx)); //here is where the piece always gets reset to 0...
+                        this.parts.push(new Tile(x, prevY+y, this.ctx)); //here is where the piece always gets reset to 0...
                     }
                 }
             }
@@ -68,11 +67,6 @@ class Piece{
         this.rotate();   
         this.move();   
 
-        this.parts.map((tile)=>{
-            if (tile.y > constant.COLSIZE-2){
-                this.falling = false;
-            }
-        })
         this.parts.map((tile)=>{
             tile.draw(this.falling);
         })
