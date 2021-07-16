@@ -37,16 +37,20 @@ class Piece{
                    }
                }
             this.type.reverse();
+
+            let newParts = [];
             
-            let prevY = this.parts[0].y;
-            this.parts =[];
             for (let y = 0; y < this.type.length; y++){
                 for (let x = 0; x < this.type[y].length; x++){
-                    if (this.type[y][x] !=0){
-                        this.parts.push(new Tile(x, prevY+y, this.ctx)); //here is where the piece always gets reset to 0...
+                    if (this.type[y][x] !=0){ //corresponds directly to the order in which the parts were added to parts
+                        if (newParts){
+                            newParts.push(new Tile(this.parts[0].x+x, this.parts[0].y+y, this.ctx));
+                        } 
                     }
                 }
             }
+            this.parts = newParts;
+            return this.parts;
         }
     }
 

@@ -95,12 +95,16 @@ class Board extends React.Component {
     }
 
     stop(piece){ 
-        // stop is being called too much
         piece.falling = false;
         piece.parts.map((tile)=>{
-            console.log(tile.x, tile.y)
-            // console.log("HIIIIIII")
-            this.grid[tile.y][tile.x] = 1;
+            if (tile.y < constant.COLSIZE){
+                this.grid[tile.y][tile.x] = 1;
+            }else{
+                this.grid[constant.COLSIZE-1][tile.x] = 1;
+            }
+
+            //highest occupied is set for a different column and existing column already has something so it equals 1 so the piece stops... 
+
             if (tile.y < this.highestOccupied){
                 this.highestOccupied = tile.y;
             }
